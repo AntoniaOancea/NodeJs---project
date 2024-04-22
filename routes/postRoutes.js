@@ -136,6 +136,35 @@ router.put('/:id', checkAuth, postController.updatePost);
  */
 router.delete('/:id', checkAuth, postController.deletePost);
 
+/**
+ * @swagger
+ * /api/posts:
+ *   get:
+ *     summary: Retrieve all posts sorted by creation date
+ *     tags: [Posts]
+ *     parameters:
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *         description: Sort order, 'asc' for ascending or 'desc' for descending (default is 'desc')
+ *     responses:
+ *       200:
+ *         description: A list of posts sorted by creation date
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Post'
+ *       404:
+ *         description: No posts found
+ *       500:
+ *         description: Server error
+ */
+router.get('/posts', postController.getPosts); 
+
+
 module.exports = router;
 
 

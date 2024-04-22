@@ -25,10 +25,14 @@ const checkAuth = require('../middlewares/checkAuth');
  *           schema:
  *             type: object
  *             required:
- *               - text
+ *               - postId
+ *               - content
  *             properties:
- *               text:
+ *               postId:
  *                 type: string
+ *               content:
+ *                 type: string
+ *                 format: email
  *     responses:
  *       201:
  *         description: Comment created successfully
@@ -96,5 +100,86 @@ router.get('/posts/:postId/comments', commentController.getCommentsByPostId);
  *         description: Server error
  */
 router.delete('/posts/:postId/comments/:commentId', checkAuth, commentController.deleteComment);
+
+/**
+ * @swagger
+ * /api/comments/{commentId}:
+ *   put:
+ *     summary: Update a comment by ID
+ *     tags: [Comments]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: commentId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The id of the comment to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               content:
+ *                 type: string
+ *                 description: New content of the comment
+ *     responses:
+ *       200:
+ *         description: Comment updated successfully
+ *       403:
+ *         description: User is not authorized to update this comment
+ *       404:
+ *         description: Comment not found
+ *       500:
+ *         description: Server error
+ */
+router.put('/:commentId', checkAuth, commentController.updateComment);
+
+/**
+ * @swagger
+ * /api/comments/by-user/{author}:
+ *   get:
+ *     summary: Retrieve all comments made by a user, grouped by post
+ *     tags: [Comments]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: author
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user ID whose comments are to be retrieved
+ *     responses:
+ *       200:
+ *         description: A list of comments grouped by posts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 postId:
+ *                   type: string
+ *                 postTitle:
+ *                   type: string
+ *                 comments:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       content:
+ *                         type: string
+ *                       createdAt:
+ *                         type: string
+ *       404:
+ *         description: No comments found
+ *       500:
+ *         description: Server error
+ */
+router.get('/by-user/:author', checkAuth, commentController.getUserCommentsByPost);
+
 
 module.exports = router;

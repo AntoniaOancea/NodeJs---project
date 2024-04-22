@@ -96,3 +96,21 @@ module.exports.deletePost = async (req, res, next) => {
     next(error);
   }
 };
+
+module.exports.getPosts = async (req, res, next) => {
+  try {
+    const sortParam = req.query.sort || 'desc'; 
+    const sortOrder = sortParam === 'desc' ? -1 : 1; 
+    const posts = await Post.find()
+                            .sort({ createdAt: sortOrder })
+                            .populate('author', 'username');
+
+    if (posts.length === 0) {
+      return res.status(404).json({ message: 'No posts found' });
+    }
+
+    res.status(200).json(posts);
+  } catch (error) {
+    next(error);
+  }
+};
