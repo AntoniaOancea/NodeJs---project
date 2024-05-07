@@ -44,5 +44,12 @@ Folosind token-ul JWT, utilizzatorul poate accesa rutele private.
 4. Operatiuni CRUD
     ![alt text](image.png)
     1. User: signup, signin, change-password, get users, get user by ID, delete user
-    2. Post: create, gett posts sorted, get post by ID, update post, delete post
-    3. Comment: create , get all comments for a post, delete comment, update, get all comments for aa user group by post
+    2. Post: create, get posts sorted, get post by ID, update post, delete post
+    3. Comment: create , get all comments for a post, delete comment, update, get all comments for a user group by post
+
+## Diagrama bazei de date
+   ![alt text](diagram.png)
+
+
+## Flow Chart Diagram
+   ![alt text](flux.png)
